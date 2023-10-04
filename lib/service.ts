@@ -69,7 +69,7 @@ export class TestingFargateService extends Construct {
       port: 3000,
       protocol: ApplicationProtocol.HTTP,
       vpc: cluster.vpc,
-      deregistrationDelay: Duration.seconds(5),
+      deregistrationDelay: Duration.seconds(0),
       healthCheck: {
         healthyThresholdCount: 2,
         timeout: Duration.seconds(2),
