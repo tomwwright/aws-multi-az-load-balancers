@@ -59,6 +59,7 @@ export class LoadBalancerStack extends cdk.Stack {
 
   private disableCrossZoneConnectivity(vpc: IVpc) {
     const blockAtoB = new NetworkAcl(this, "BlockCrossZoneAtoB", {
+      networkAclName: "BlockAtoB",
       vpc,
     })
     blockAtoB.addEntry("BlockAToB", {
@@ -76,6 +77,7 @@ export class LoadBalancerStack extends cdk.Stack {
     vpc.publicSubnets[0].associateNetworkAcl("BlockCrossZoneAtoB", blockAtoB)
 
     const blockBtoA = new NetworkAcl(this, "BlockCrossZoneBtoA", {
+      networkAclName: "BlockBtoA",
       vpc,
     })
     blockBtoA.addEntry("BlockBtoA", {
@@ -90,6 +92,6 @@ export class LoadBalancerStack extends cdk.Stack {
       traffic: AclTraffic.allTraffic(),
       ruleAction: Action.ALLOW,
     })
-    vpc.publicSubnets[1].associateNetworkAcl("BlockCrossZoneBtoA", blockAtoB)
+    vpc.publicSubnets[1].associateNetworkAcl("BlockCrossZoneBtoA", blockBtoA)
   }
 }
