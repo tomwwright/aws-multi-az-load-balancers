@@ -23,5 +23,6 @@ function main() {
     console.log(`Server running at http://localhost:${port}/`);
   });
 }
+EOF
 
 CMD ["node", "/app/server.js"]
