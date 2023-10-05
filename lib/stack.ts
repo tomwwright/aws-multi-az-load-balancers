@@ -64,12 +64,21 @@ export class LoadBalancerStack extends cdk.Stack {
     })
     blockAtoB.addEntry("BlockAToB", {
       ruleNumber: 100,
+      direction: TrafficDirection.EGRESS,
       cidr: AclCidr.ipv4(vpc.publicSubnets[1].ipv4CidrBlock),
       traffic: AclTraffic.allTraffic(),
       ruleAction: Action.DENY,
     })
-    blockAtoB.addEntry("AllowAll", {
+    blockAtoB.addEntry("AllowAllEgress", {
       ruleNumber: 999,
+      direction: TrafficDirection.EGRESS,
+      cidr: AclCidr.anyIpv4(),
+      traffic: AclTraffic.allTraffic(),
+      ruleAction: Action.ALLOW,
+    })
+    blockAtoB.addEntry("AllowAllIngress", {
+      ruleNumber: 999,
+      direction: TrafficDirection.INGRESS,
       cidr: AclCidr.anyIpv4(),
       traffic: AclTraffic.allTraffic(),
       ruleAction: Action.ALLOW,
@@ -82,12 +91,21 @@ export class LoadBalancerStack extends cdk.Stack {
     })
     blockBtoA.addEntry("BlockBtoA", {
       ruleNumber: 100,
+      direction: TrafficDirection.EGRESS,
       cidr: AclCidr.ipv4(vpc.publicSubnets[0].ipv4CidrBlock),
       traffic: AclTraffic.allTraffic(),
       ruleAction: Action.DENY,
     })
-    blockBtoA.addEntry("AllowAll", {
+    blockBtoA.addEntry("AllowAllEgress", {
       ruleNumber: 999,
+      direction: TrafficDirection.EGRESS,
+      cidr: AclCidr.anyIpv4(),
+      traffic: AclTraffic.allTraffic(),
+      ruleAction: Action.ALLOW,
+    })
+    blockBtoA.addEntry("AllowAllIngress", {
+      ruleNumber: 999,
+      direction: TrafficDirection.INGRESS,
       cidr: AclCidr.anyIpv4(),
       traffic: AclTraffic.allTraffic(),
       ruleAction: Action.ALLOW,
