@@ -2,10 +2,12 @@ import * as cdk from "aws-cdk-lib";
 import { Cluster } from "aws-cdk-lib/aws-ecs";
 import { ApplicationLoadBalancer, ApplicationProtocol } from "aws-cdk-lib/aws-elasticloadbalancingv2";
 import { TestingFargateService } from "./service";
-import { AclCidr, AclTraffic, Action, IVpc, NetworkAcl, SecurityGroup, SubnetType, Vpc } from "aws-cdk-lib/aws-ec2";
+import { AclCidr, AclTraffic, Action, IVpc, NetworkAcl, SecurityGroup, SubnetType, TrafficDirection, Vpc } from "aws-cdk-lib/aws-ec2";
 
 interface LoadBalancerStackProps extends cdk.StackProps {
   disableCrossZoneConnectivity: boolean,
+  disableCrossZoneLoadBalancing: boolean;
+  runningTaskCount: number
 }
 
 export class LoadBalancerStack extends cdk.Stack {
@@ -44,12 +46,16 @@ export class LoadBalancerStack extends cdk.Stack {
       securityGroup,
       loadBalancerName: id,
       internetFacing: true,
+      idleTimeout: cdk.Duration.seconds(2),
     });
 
     const service = new TestingFargateService(this, "Service", {
       cluster,
       securityGroup,
+      desiredCount: props.runningTaskCount,
     })
+
+    service.targetGroup.setAttribute("load_balancing.cross_zone.enabled", `${!props.disableCrossZoneLoadBalancing}`)
 
     loadBalancer.addListener("Listener", {
       protocol: ApplicationProtocol.HTTP,

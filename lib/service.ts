@@ -18,6 +18,7 @@ import { Construct } from "constructs";
 type FargateServiceProps = {
   cluster: ICluster;
   securityGroup: ISecurityGroup;
+  desiredCount: number;
 };
 
 export class TestingFargateService extends Construct {
@@ -28,6 +29,7 @@ export class TestingFargateService extends Construct {
     const {
       cluster,
       securityGroup,
+      desiredCount,
     } = props;
 
     const taskDefinition = new FargateTaskDefinition(this, "TaskDefinition", {
@@ -59,9 +61,10 @@ export class TestingFargateService extends Construct {
       taskDefinition,
       serviceName: id,
       securityGroups: [securityGroup],
-      minHealthyPercent: 0,
+      minHealthyPercent: 100,
       maxHealthyPercent: 200,
-      assignPublicIp: true
+      assignPublicIp: true,
+      desiredCount
     });
 
     this.targetGroup = new ApplicationTargetGroup(this, "TargetGroup", {

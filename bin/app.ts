@@ -5,5 +5,7 @@ import { LoadBalancerStack } from "../lib/stack";
 
 const app = new cdk.App();
 new LoadBalancerStack(app, 'testing-multi-az', {
-  disableCrossZoneConnectivity: false
+  disableCrossZoneConnectivity: false,
+  disableCrossZoneLoadBalancing: false,
+  runningTaskCount: 2
 })
