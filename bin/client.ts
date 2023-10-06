@@ -30,8 +30,8 @@ async function request(ip: string) {
     .map(([key, count]) => `${key}=${count}`)
     .sort()
     .join(" ");
-  const date = new Date().toTimeString()
-  console.log(padRight(`${date} ${ip} -> ${response.status} ${response.statusText}`, 30), report);
+  const time = new Date().toISOString().slice(11, 19)
+  console.log(padRight(`${time} ${ip}`, 24), padRight(`-> ${response.status} ${response.statusText}`, 20), report);
 }
 
 /**
