@@ -311,6 +311,8 @@ Similar to our previous example, as one of the endpoints loses access to its onl
 1. One of the load balancer endpoints begins serving `504 Gateway Time-out`. This is the endpoint that is attempting to perform cross-zone load balancing while cross-AZ connectivity is interrupted, resulting in request timeout. The cross-AZ host starts failing health checks and despite now only having unhealthy hosts the endpoint attempts to forward requests regardless. This is known as "fail open".
 2. After 60 seconds, we see the `13.237.107.118` endpoint that was serving `504` stops receiving requests from our client. The DNS hostname for the load balancer has been updated to no longer resolve that endpoint to remove it from service. This is known as "DNS failover".
 
+![Failing cross-zone load balancing](docs/failing-cross-zone-load-balancing.svg)
+
 These behaviours are described in this AWS documentation on [Target group health](https://docs.aws.amazon.com/elasticloadbalancing/latest/network/target-group-health.html), under the section Unhealthy state actions.
 
 ### Forcing DNS failover using Route 53 ARC Zonal Shift
@@ -357,5 +359,13 @@ $ curl 54.252.221.97
 Remember that **the resources deployed in this example application have hourly costs!**
 
 ```sh
-pnpm cdk destroy
+$ pnpm cdk destroy
+
+> aws-ecs-deployment-analysis@0.1.0 cdk /Users/tom.wright/Projects/aws-multi-az-load-balancers
+> cdk "destroy"
+
+Are you sure you want to delete: testing-multi-az (y/n)? y
+testing-multi-az: destroying... [1/1]
+
+ ✅  testing-multi-az: destroyed
 ```
