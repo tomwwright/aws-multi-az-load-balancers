@@ -58,7 +58,7 @@ $ curl 54.252.221.97
 {"message":"ok"}
 ```
 
-In the AWS Console > EC2 > Network Interfaces, we can see the allocated network interfaces. We can see the load balancer deploys a network interface in each the configured subnet for each AZ:
+In the AWS Console > EC2 > Network Interfaces, we can see the allocated network interfaces. We can see the load balancer deploys a network interface in the configured subnet for each AZ:
 
 ![Load balancer ENIs](docs/load-balancer-eni.png)
 
