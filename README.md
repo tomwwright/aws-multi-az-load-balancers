@@ -97,13 +97,13 @@ $ pnpm client testing-multi-az-1303684287.ap-southeast-2.elb.amazonaws.com
 
 Currently our load balancer _(*)_ is configured for "cross-zone" load balancing which configures each endpoint to consider all targets valid, not just the ones within the same Availability Zone (AZ).
 
-> _*: In reality, the cross-zone load balancing is an attribute of the target group behind the load balancer. But whatever.
+> _*: In reality, the cross-zone load balancing is an attribute of the target group behind the load balancer. But whatever._
 
-We can see this reflected in the "healthy host count" metric in CloudWatch:
+We can see this reflected in the "healthy host count" metric in CloudWatch. Each endpoint has access to two healthy and routable hosts to fulfil requests.
 
 ![Two healthy hosts](docs/host-counts.png)
 
-Importantly, if we look at the "sample count" for these metrics, we can see that each endpoint is posting its own "view" of the healthy routable hosts:
+Importantly, if we look at the "sample count" for these metrics, we can see that each endpoint is posting its own "view" of the healthy routable hosts -- two samples for two endpoints.
 
 ![Each endpoint samples health](docs/host-counts-samples.png)
 
@@ -119,7 +119,7 @@ The metrics reflect that there is only a single routable task:
 
 ![Single healthy host](docs/host-counts-one-task.png)
 
-Both load balancer endpoints continue to serve correctly, providing high availability at the load balancer layer:
+Both load balancer endpoints continue to serve correctly, maintaining high availability at the load balancer layer:
 
 ```
 $ pnpm client testing-multi-az-1303684287.ap-southeast-2.elb.amazonaws.com
